@@ -1,13 +1,126 @@
+// Initialize particles.js first
+document.addEventListener("DOMContentLoaded", () => {
+    // Initialize particles
+    particlesJS("particles-js", {
+        particles: {
+            number: {
+                value: 80,
+                density: {
+                    enable: true,
+                    value_area: 800,
+                },
+            },
+            color: {
+                value: "#6366f1",
+            },
+            shape: {
+                type: "circle",
+                stroke: {
+                    width: 0,
+                    color: "#000000",
+                },
+            },
+            opacity: {
+                value: 0.5,
+                random: false,
+                anim: {
+                    enable: false,
+                    speed: 1,
+                    opacity_min: 0.1,
+                    sync: false,
+                },
+            },
+            size: {
+                value: 3,
+                random: true,
+                anim: {
+                    enable: false,
+                    speed: 40,
+                    size_min: 0.1,
+                    sync: false,
+                },
+            },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#6366f1",
+                opacity: 0.4,
+                width: 1,
+            },
+            move: {
+                enable: true,
+                speed: 6,
+                direction: "none",
+                random: false,
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+                attract: {
+                    enable: false,
+                    rotateX: 600,
+                    rotateY: 1200,
+                },
+            },
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: {
+                    enable: true,
+                    mode: "repulse",
+                },
+                onclick: {
+                    enable: true,
+                    mode: "push",
+                },
+                resize: true,
+            },
+            modes: {
+                grab: {
+                    distance: 400,
+                    line_linked: {
+                        opacity: 1,
+                    },
+                },
+                bubble: {
+                    distance: 400,
+                    size: 40,
+                    duration: 2,
+                    opacity: 8,
+                    speed: 3,
+                },
+                repulse: {
+                    distance: 200,
+                    duration: 0.4,
+                },
+                push: {
+                    particles_nb: 4,
+                },
+                remove: {
+                    particles_nb: 2,
+                },
+            },
+        },
+        retina_detect: true,
+    });
+});
+
 // Preloader
 window.addEventListener("load", () => {
-  const preloader = document.querySelector(".preloader")
-  setTimeout(() => {
-    preloader.style.opacity = "0"
+    const preloader = document.querySelector(".preloader");
+    // Add loading animation to progress bar
+    const progress = document.querySelector(".progress");
+    progress.style.width = "100%";
+
+    // Remove preloader after animations complete
     setTimeout(() => {
-      preloader.style.display = "none"
-    }, 500)
-  }, 3000)
-})
+        preloader.style.opacity = "0";
+        document.body.style.overflow = "visible"; // Enable scrolling
+        setTimeout(() => {
+            preloader.style.display = "none";
+        }, 500);
+    }, 1500); // Reduced from 3000ms to 1500ms for better UX
+});
 
 // Custom Cursor
 const cursor = document.querySelector(".cursor")
@@ -29,111 +142,6 @@ if (window.innerWidth <= 768) {
   cursorFollower.style.display = "none"
 }
 
-// Particles.js Configuration
-const particlesJS = window.particlesJS // Declare particlesJS variable
-particlesJS("particles-js", {
-  particles: {
-    number: {
-      value: 80,
-      density: {
-        enable: true,
-        value_area: 800,
-      },
-    },
-    color: {
-      value: "#6366f1",
-    },
-    shape: {
-      type: "circle",
-      stroke: {
-        width: 0,
-        color: "#000000",
-      },
-    },
-    opacity: {
-      value: 0.5,
-      random: false,
-      anim: {
-        enable: false,
-        speed: 1,
-        opacity_min: 0.1,
-        sync: false,
-      },
-    },
-    size: {
-      value: 3,
-      random: true,
-      anim: {
-        enable: false,
-        speed: 40,
-        size_min: 0.1,
-        sync: false,
-      },
-    },
-    line_linked: {
-      enable: true,
-      distance: 150,
-      color: "#6366f1",
-      opacity: 0.4,
-      width: 1,
-    },
-    move: {
-      enable: true,
-      speed: 6,
-      direction: "none",
-      random: false,
-      straight: false,
-      out_mode: "out",
-      bounce: false,
-      attract: {
-        enable: false,
-        rotateX: 600,
-        rotateY: 1200,
-      },
-    },
-  },
-  interactivity: {
-    detect_on: "canvas",
-    events: {
-      onhover: {
-        enable: true,
-        mode: "repulse",
-      },
-      onclick: {
-        enable: true,
-        mode: "push",
-      },
-      resize: true,
-    },
-    modes: {
-      grab: {
-        distance: 400,
-        line_linked: {
-          opacity: 1,
-        },
-      },
-      bubble: {
-        distance: 400,
-        size: 40,
-        duration: 2,
-        opacity: 8,
-        speed: 3,
-      },
-      repulse: {
-        distance: 200,
-        duration: 0.4,
-      },
-      push: {
-        particles_nb: 4,
-      },
-      remove: {
-        particles_nb: 2,
-      },
-    },
-  },
-  retina_detect: true,
-})
-
 // Mobile Navigation Toggle
 const navToggle = document.getElementById("nav-toggle")
 const navMenu = document.getElementById("nav-menu")
@@ -141,6 +149,34 @@ const navMenu = document.getElementById("nav-menu")
 navToggle.addEventListener("click", () => {
   navMenu.classList.toggle("active")
   navToggle.classList.toggle("active")
+  toggleScrollLock(navMenu.classList.contains("active"))
+})
+
+// Close mobile menu when clicking outside
+document.addEventListener("click", (e) => {
+  if (
+    navMenu.classList.contains("active") &&
+    !navMenu.contains(e.target) &&
+    !navToggle.contains(e.target)
+  ) {
+    navMenu.classList.remove("active")
+    navToggle.classList.remove("active")
+    toggleScrollLock(false)
+  }
+})
+
+// Handle orientation change
+window.addEventListener("orientationchange", () => {
+  // Reset mobile menu
+  navMenu.classList.remove("active")
+  navToggle.classList.remove("active")
+  toggleScrollLock(false)
+
+  // Reset any full-height elements
+  setTimeout(() => {
+    document.documentElement.style.height = "100%"
+    document.body.style.height = "100%"
+  }, 300)
 })
 
 // Close mobile menu when clicking on a link
@@ -451,250 +487,231 @@ document.querySelectorAll('a[target="_blank"]').forEach((link) => {
   link.addEventListener("click", function () {
     const originalText = this.innerHTML
     this.innerHTML = '<span class="loading"></span> Opening...'
-
-    setTimeout(() => {
-      this.innerHTML = originalText
-    }, 1000)
+    this.disabled = true
   })
 })
 
-// Keyboard navigation support
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    // Close mobile menu if open
-    navMenu.classList.remove("active")
-    navToggle.classList.remove("active")
-  }
-
-  // Arrow key navigation for sections
-  if (e.key === "ArrowDown" && e.ctrlKey) {
-    e.preventDefault()
-    const sections = document.querySelectorAll("section[id]")
-    const currentSection = getCurrentSection()
-    const currentIndex = Array.from(sections).findIndex((section) => section.id === currentSection)
-
-    if (currentIndex < sections.length - 1) {
-      sections[currentIndex + 1].scrollIntoView({ behavior: "smooth" })
-    }
-  }
-
-  if (e.key === "ArrowUp" && e.ctrlKey) {
-    e.preventDefault()
-    const sections = document.querySelectorAll("section[id]")
-    const currentSection = getCurrentSection()
-    const currentIndex = Array.from(sections).findIndex((section) => section.id === currentSection)
-
-    if (currentIndex > 0) {
-      sections[currentIndex - 1].scrollIntoView({ behavior: "smooth" })
-    }
-  }
-})
-
-function getCurrentSection() {
-  const sections = document.querySelectorAll("section[id]")
-  let current = ""
-
-  sections.forEach((section) => {
-    const sectionTop = section.offsetTop
-    if (scrollY >= sectionTop - 200) {
-      current = section.getAttribute("id")
-    }
-  })
-
-  return current
-}
-
-// Enhanced form validation
-const formInputs = document.querySelectorAll(".form-group input, .form-group textarea")
-formInputs.forEach((input) => {
-  input.addEventListener("blur", function () {
-    validateField(this)
-  })
-
-  input.addEventListener("input", function () {
-    if (this.classList.contains("error")) {
-      validateField(this)
-    }
-  })
-})
-
-function validateField(field) {
-  const value = field.value.trim()
-  const fieldType = field.type
-  let isValid = true
-  let errorMessage = ""
-
-  // Remove existing error styling
-  field.classList.remove("error")
-  const existingError = field.parentNode.querySelector(".error-message")
-  if (existingError) {
-    existingError.remove()
-  }
-
-  // Validation rules
-  if (field.hasAttribute("required") && !value) {
-    isValid = false
-    errorMessage = "This field is required"
-  } else if (fieldType === "email" && value && !isValidEmail(value)) {
-    isValid = false
-    errorMessage = "Please enter a valid email address"
-  } else if (field.name === "name" && value && value.length < 2) {
-    isValid = false
-    errorMessage = "Name must be at least 2 characters long"
-  } else if (field.name === "message" && value && value.length < 10) {
-    isValid = false
-    errorMessage = "Message must be at least 10 characters long"
-  }
-
-  if (!isValid) {
-    field.classList.add("error")
-    const errorElement = document.createElement("div")
-    errorElement.className = "error-message"
-    errorElement.textContent = errorMessage
-    errorElement.style.cssText = `
-            color: #ef4444;
-            font-size: 0.8rem;
-            margin-top: 0.5rem;
-            animation: slideInUp 0.3s ease;
-        `
-    field.parentNode.appendChild(errorElement)
-  }
-
-  return isValid
-}
-
-function isValidEmail(email) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return emailRegex.test(email)
-}
-
-// Add CSS for error states
-const errorStyles = document.createElement("style")
-errorStyles.textContent = `
-    .form-group input.error,
-    .form-group textarea.error {
-        border-color: #ef4444 !important;
-        background: rgba(239, 68, 68, 0.1) !important;
-    }
-
-    .form-group input.error:focus,
-    .form-group textarea.error:focus {
-        border-color: #ef4444 !important;
-        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
-    }
-`
-document.head.appendChild(errorStyles)
-
-// Performance optimization: Throttle scroll events
-function throttle(func, limit) {
-  let inThrottle
-  return function () {
-    const args = arguments
-
-    if (!inThrottle) {
-      func.apply(this, args)
-      inThrottle = true
-      setTimeout(() => (inThrottle = false), limit)
-    }
-  }
-}
-
-// Apply throttling to scroll events
-window.addEventListener(
-  "scroll",
-  throttle(() => {
-    // Navbar scroll effect
-    const navbar = document.querySelector(".navbar")
-    if (window.scrollY > 100) {
-      navbar.classList.add("scrolled")
-    } else {
-      navbar.classList.remove("scrolled")
-    }
-
-    // Active navigation highlighting
-    const sections = document.querySelectorAll("section[id]")
-    const navLinks = document.querySelectorAll(".nav-link")
-
-    let current = ""
-    sections.forEach((section) => {
-      const sectionTop = section.offsetTop
-      if (scrollY >= sectionTop - 200) {
-        current = section.getAttribute("id")
+// Section reveal on scroll
+const sections = document.querySelectorAll("section")
+const sectionObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("reveal")
+        sectionObserver.unobserve(entry.target)
       }
     })
-
-    navLinks.forEach((link) => {
-      link.classList.remove("active")
-      if (link.getAttribute("href") === `#${current}`) {
-        link.classList.add("active")
-      }
-    })
-  }, 100),
+  },
+  {
+    threshold: 0.2,
+  },
 )
 
-// Initialize everything when DOM is loaded
-document.addEventListener("DOMContentLoaded", () => {
-  // Add entrance animations to hero elements
-  const heroElements = document.querySelectorAll(
-    ".hero-greeting, .hero-title, .hero-subtitle-container, .hero-description, .hero-buttons, .hero-social, .hero-image",
-  )
-  heroElements.forEach((element, index) => {
-    element.style.opacity = "0"
-    element.style.transform = "translateY(30px)"
-    setTimeout(
-      () => {
-        element.style.transition = "all 0.8s ease"
-        element.style.opacity = "1"
-        element.style.transform = "translateY(0)"
+sections.forEach((section) => {
+  sectionObserver.observe(section)
+})
+
+// Smooth scroll to top button
+const scrollToTopBtn = document.querySelector(".scroll-to-top")
+window.addEventListener("scroll", () => {
+  if (window.scrollY > 300) {
+    scrollToTopBtn.classList.add("visible")
+  } else {
+    scrollToTopBtn.classList.remove("visible")
+  }
+})
+
+scrollToTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  })
+})
+
+// Dark mode toggle
+const darkModeToggle = document.getElementById("dark-mode-toggle")
+const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)")
+
+// Apply dark mode if the user had previously selected it
+if (localStorage.getItem("dark-mode") === "enabled") {
+  document.body.classList.add("dark-mode")
+}
+
+// Apply dark mode if the system preference is dark
+else if (prefersDarkScheme.matches) {
+  document.body.classList.add("dark-mode")
+}
+
+darkModeToggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode")
+
+  // Save user preference in local storage
+  if (document.body.classList.contains("dark-mode")) {
+    localStorage.setItem("dark-mode", "enabled")
+  } else {
+    localStorage.setItem("dark-mode", "disabled")
+  }
+})
+
+// Media element animations
+const mediaElements = document.querySelectorAll(".media-element")
+const mediaObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const media = entry.target.querySelector("video, img")
+        if (media.tagName === "VIDEO") {
+          media.play()
+        } else {
+          media.classList.add("fade-in")
+        }
+        mediaObserver.unobserve(entry.target)
+      }
+    })
+  },
+  {
+    threshold: 0.2,
+  },
+)
+
+mediaElements.forEach((element) => {
+  mediaObserver.observe(element)
+})
+
+// Form validation and submission
+const form = document.getElementById("myForm")
+form.addEventListener("submit", function (e) {
+  e.preventDefault()
+
+  // Simple client-side validation
+  const name = this.name.value.trim()
+  const email = this.email.value.trim()
+  const message = this.message.value.trim()
+
+  if (!name || !email || !message) {
+    return showNotification("Please fill in all fields.", "error")
+  }
+
+  if (!validateEmail(email)) {
+    return showNotification("Please enter a valid email address.", "error")
+  }
+
+  // If validation passes, submit the form
+  this.submit()
+})
+
+// Email validation function
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return re.test(String(email).toLowerCase())
+}
+
+// Dynamic content loading for portfolio
+const projectContainer = document.getElementById("project-container")
+const projectLoader = document.getElementById("project-loader")
+
+function loadProjects() {
+  projectLoader.style.display = "block"
+
+  setTimeout(() => {
+    projectLoader.style.display = "none"
+
+    // Simulate loaded projects
+    const projects = [
+      {
+        title: "Project 1",
+        description: "Description for project 1",
+        image: "https://via.placeholder.com/400x300",
+        url: "#",
       },
-      200 + index * 200,
-    )
+      {
+        title: "Project 2",
+        description: "Description for project 2",
+        image: "https://via.placeholder.com/400x300",
+        url: "#",
+      },
+      {
+        title: "Project 3",
+        description: "Description for project 3",
+        image: "https://via.placeholder.com/400x300",
+        url: "#",
+      },
+    ]
+
+    projects.forEach((project) => {
+      const projectCard = document.createElement("div")
+      projectCard.className = "project-card"
+      projectCard.innerHTML = `
+                <div class="project-image">
+                    <img src="${project.image}" alt="${project.title}">
+                </div>
+                <div class="project-info">
+                    <h3 class="project-title">${project.title}</h3>
+                    <p class="project-description">${project.description}</p>
+                    <a href="${project.url}" class="btn">View Project</a>
+                </div>
+            `
+      projectContainer.appendChild(projectCard)
+    })
+  }, 1000)
+}
+
+// Load projects on page load
+loadProjects()
+
+// Filter projects by category
+const filterBtns = document.querySelectorAll(".filter-btn")
+filterBtns.forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const category = this.getAttribute("data-filter")
+
+    // Active class toggle
+    filterBtns.forEach((b) => b.classList.remove("active"))
+    this.classList.add("active")
+
+    // Filter logic
+    const projects = document.querySelectorAll(".project-card")
+    projects.forEach((project) => {
+      if (category === "all" || project.classList.contains(category)) {
+        project.style.display = "block"
+      } else {
+        project.style.display = "none"
+      }
+    })
   })
-
-  // Initialize AOS-like animations
-  const aosElements = document.querySelectorAll("[data-aos]")
-  aosElements.forEach((element) => {
-    observer.observe(element)
-  })
 })
 
-// Add smooth page transitions
-window.addEventListener("beforeunload", () => {
-  document.body.style.opacity = "0"
-  document.body.style.transition = "opacity 0.3s ease"
-})
+// Scroll reveal for services section
+const servicesSection = document.getElementById("services")
+const serviceObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const services = entry.target.querySelectorAll(".service")
+        services.forEach((service, index) => {
+          setTimeout(() => {
+            service.classList.add("slide-in")
+          }, index * 100)
+        })
+        serviceObserver.unobserve(entry.target)
+      }
+    })
+  },
+  {
+    threshold: 0.2,
+  },
+)
 
-// Easter egg: Konami code
-const konamiCode = []
-const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65] // Up Up Down Down Left Right Left Right B A
+serviceObserver.observe(servicesSection)
 
-document.addEventListener("keydown", (e) => {
-  konamiCode.push(e.keyCode)
-  if (konamiCode.length > konamiSequence.length) {
-    konamiCode.shift()
-  }
-
-  if (konamiCode.join(",") === konamiSequence.join(",")) {
-    showNotification("🎉 Konami Code activated! You found the easter egg!", "success")
-    // Add some fun effect
-    document.body.style.animation = "rainbow 2s ease-in-out"
-    setTimeout(() => {
-      document.body.style.animation = ""
-    }, 2000)
-  }
-})
-
-// Add rainbow animation for easter egg
-const rainbowStyles = document.createElement("style")
-rainbowStyles.textContent = `
-    @keyframes rainbow {
-        0% { filter: hue-rotate(0deg); }
-        100% { filter: hue-rotate(360deg); }
+// Fallback to remove preloader if it's stuck
+setTimeout(() => {
+    const preloader = document.querySelector(".preloader");
+    if (preloader && preloader.style.display !== "none") {
+        preloader.style.opacity = "0";
+        document.body.style.overflow = "visible";
+        setTimeout(() => {
+            preloader.style.display = "none";
+        }, 500);
     }
-`
-document.head.appendChild(rainbowStyles)
-
-// Make sure emailjs is loaded before this script runs, e.g., by including the CDN in your HTML file
-(function(){
-  emailjs.init("YOUR_USER_ID");
-})();
+}, 5000); // Fallback after 5 seconds
