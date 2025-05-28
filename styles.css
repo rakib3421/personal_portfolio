@@ -33,34 +33,135 @@ body {
   background: var(--bg-primary);
 }
 
-/* Update Preloader Styles */
+/* Enhanced Preloader Styles */
 .preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--bg-dark);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  transition: opacity 0.5s ease;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    transition: opacity 0.5s ease;
 }
 
+.preloader-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+}
+
+.brain-animation {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.brain-animation i {
+    font-size: 3rem;
+    color: var(--primary-color);
+    animation: pulse 2s infinite;
+}
+
+.brain-waves {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    opacity: 0;
+    animation: ripple 2s infinite;
+}
+
+.brain-animation::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    opacity: 0;
+    animation: ripple 2s infinite 0.5s;
+}
+
+.loading-text {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: 500;
+    display: flex;
+    gap: 0.2rem;
+}
+
+.loading-text span {
+    animation: bounce 1.5s infinite;
+}
+
+.loading-text span:nth-child(2) { animation-delay: 0.1s; }
+.loading-text span:nth-child(3) { animation-delay: 0.2s; }
+.loading-text span:nth-child(4) { animation-delay: 0.3s; }
+.loading-text span:nth-child(5) { animation-delay: 0.4s; }
+.loading-text span:nth-child(6) { animation-delay: 0.5s; }
+.loading-text span:nth-child(7) { animation-delay: 0.6s; }
+.loading-text span:nth-child(8) { animation-delay: 0.7s; }
+.loading-text span:nth-child(9) { animation-delay: 0.8s; }
+.loading-text span:nth-child(10) { animation-delay: 0.9s; }
+
 .progress-bar {
-  width: 200px;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 2px;
-  overflow: hidden;
+    width: 200px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
 }
 
 .progress {
-  height: 100%;
-  background: var(--gradient-primary);
-  width: 0;
-  transition: width 1.5s ease;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    width: 0;
+    transition: width 1.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -50%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes ripple {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(200%); }
 }
 
 /* Add this to ensure content is hidden during load */

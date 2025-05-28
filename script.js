@@ -103,23 +103,44 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         retina_detect: true,
     });
-});
 
-// Preloader
-window.addEventListener("load", () => {
-    const preloader = document.querySelector(".preloader");
-    // Add loading animation to progress bar
+    // Start loading animation
     const progress = document.querySelector(".progress");
-    progress.style.width = "100%";
+    const preloader = document.querySelector(".preloader");
+    let width = 0;
 
-    // Remove preloader after animations complete
+    const increaseProgress = () => {
+        if (width >= 100) {
+            clearInterval(progressInterval);
+            setTimeout(() => {
+                preloader.style.opacity = "0";
+                document.body.style.overflow = "visible";
+                setTimeout(() => {
+                    preloader.style.display = "none";
+                }, 500);
+            }, 500);
+            return;
+        }
+        width += Math.random() * 15;
+        if (width > 100) width = 100;
+        progress.style.width = width + "%";
+    };
+
+    const progressInterval = setInterval(increaseProgress, 100);
+
+    // Fallback if loading takes too long
     setTimeout(() => {
-        preloader.style.opacity = "0";
-        document.body.style.overflow = "visible"; // Enable scrolling
-        setTimeout(() => {
-            preloader.style.display = "none";
-        }, 500);
-    }, 1500); // Reduced from 3000ms to 1500ms for better UX
+        if (preloader.style.display !== "none") {
+            width = 100;
+            progress.style.width = "100%";
+            clearInterval(progressInterval);
+            preloader.style.opacity = "0";
+            document.body.style.overflow = "visible";
+            setTimeout(() => {
+                preloader.style.display = "none";
+            }, 500);
+        }
+    }, 5000);
 });
 
 // Custom Cursor
