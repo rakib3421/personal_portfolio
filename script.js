@@ -736,3 +736,57 @@ setTimeout(() => {
         }, 500);
     }
 }, 5000); // Fallback after 5 seconds
+
+// Initialize EmailJS with your public key
+(function() {
+    emailjs.init("7zeJusMVYP40IQSgP"); // Add quotes around the public key
+})();
+
+// Function to send email
+function sendEmail(e) {
+    e.preventDefault();
+
+    // Show loading state
+    const submitBtn = document.querySelector('.submit-btn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+    submitBtn.disabled = true;
+
+    // Get form data
+    const templateParams = {
+        from_name: document.getElementById('name').value,
+        from_email: document.getElementById('email').value,
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value
+    };
+
+    // Add input validation
+    if (!templateParams.from_name || !templateParams.from_email || !templateParams.subject || !templateParams.message) {
+        showNotification('Please fill in all fields', 'error');
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+        return;
+    }
+
+    // Send email using EmailJS
+    emailjs.send('service_uo1q4ea', 'template_idkiidg', templateParams)
+        .then(function(response) {
+            // Success
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Sent Successfully!';
+            document.getElementById('contact-form').reset();
+            showNotification('Message sent successfully!', 'success');
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 3000);
+        }, function(error) {
+            // Error
+            submitBtn.innerHTML = '<i class="fas fa-times"></i> Failed to Send';
+            console.error('Email failed to send:', error);
+            showNotification('Failed to send message. Please try again.', 'error');
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 3000);
+        });
+}
